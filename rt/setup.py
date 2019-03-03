@@ -16,7 +16,7 @@ REQUIRES_PYTHON = '>=3.7.0'
 VERSION = None
 
 REQUIRED = [
-    # 'requests', 'maya', 'records',
+    'numpy',
 ]
 
 # What packages are optional?
