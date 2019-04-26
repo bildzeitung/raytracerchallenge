@@ -22,6 +22,11 @@ def test_vector_factory():
     pass
 
 
+@scenario("tuple.feature", "Adding two tuples")
+def test_tuple_addition():
+    pass
+
+
 @given(
     parsers.cfparse(
         "p = point({x:Number}, {y:Number}, {z:Number})", extra_types=dict(Number=float)
@@ -47,6 +52,26 @@ def _vector(x, y, z):
     )
 )
 def _tuple(x, y, z, w):
+    return make_tuple(x, y, z, w)
+
+
+@given(
+    parsers.cfparse(
+        "a1 = tuple({x:Number}, {y:Number}, {z:Number}, {w:Number})",
+        extra_types=dict(Number=float),
+    )
+)
+def _a1_tuple(x, y, z, w):
+    return make_tuple(x, y, z, w)
+
+
+@given(
+    parsers.cfparse(
+        "a2 = tuple({x:Number}, {y:Number}, {z:Number}, {w:Number})",
+        extra_types=dict(Number=float),
+    )
+)
+def _a2_tuple(x, y, z, w):
     return make_tuple(x, y, z, w)
 
 
@@ -100,3 +125,13 @@ def is_point_from_tuple(_point, x, y, z, w):
 )
 def is_vectory_from_tuple(_vector, x, y, z, w):
     assert _vector == Tuple(x, y, z, w)
+
+
+@then(
+    parsers.cfparse(
+        "a1 + a2 = tuple({x:Number}, {y:Number}, {z:Number}, {w:Number})",
+        extra_types=dict(Number=float),
+    )
+)
+def valid_addition(_a1_tuple, _a2_tuple, x, y, z, w):
+    assert Tuple(x, y, z, w) == _a1_tuple + _a2_tuple

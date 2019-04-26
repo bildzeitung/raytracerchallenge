@@ -10,8 +10,11 @@ class Tuple:
         for w == 1, it's a point
     """
 
-    def __init__(self, x: float, y: float, z: float, w: float):
-        self._t = np.array((x, y, z, w))
+    def __init__(self, x: float, y: float, z: float, w: float, narray=None):
+        if narray is not None:
+            self._t = narray
+        else:
+            self._t = np.array((x, y, z, w))
 
     @property
     def x(self):
@@ -31,6 +34,9 @@ class Tuple:
 
     def __eq__(self, other):
         return (self._t == other._t).all()
+
+    def __add__(self, other):
+        return Tuple(0, 0, 0, 0, self._t + other._t)
 
 
 class Point(Tuple):
