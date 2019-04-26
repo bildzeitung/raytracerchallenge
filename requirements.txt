@@ -1,6 +1,11 @@
 # dev work
 black
 flake8
+pytest
+pytest-bdd
+pytest-mock
+dpcontracts
+hypothesis
 
 # module
 -e rt
