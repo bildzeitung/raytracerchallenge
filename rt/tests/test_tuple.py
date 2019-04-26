@@ -1,5 +1,5 @@
 from pytest_bdd import scenario, given, then, parsers
-from rt.rtctuple import make_tuple, Point, Vector
+from rt.rtctuple import make_tuple, Point, Vector, point, vector, Tuple
 
 
 @scenario("tuple.feature", "A tuple with w=1.0 is a point")
@@ -10,6 +10,34 @@ def test_point_tuple():
 @scenario("tuple.feature", "A tuple with w=0 is a vector")
 def test_vector_tuple():
     pass
+
+
+@scenario("tuple.feature", "point() creates tuples with w=1")
+def test_point_factory():
+    pass
+
+
+@scenario("tuple.feature", "vector() creates tuples with w=0")
+def test_vector_factory():
+    pass
+
+
+@given(
+    parsers.cfparse(
+        "p = point({x:Number}, {y:Number}, {z:Number})", extra_types=dict(Number=float)
+    )
+)
+def _point(x, y, z):
+    return point(x, y, z)
+
+
+@given(
+    parsers.cfparse(
+        "v = vector({x:Number}, {y:Number}, {z:Number})", extra_types=dict(Number=float)
+    )
+)
+def _vector(x, y, z):
+    return vector(x, y, z)
 
 
 @given(
@@ -52,3 +80,23 @@ def is_a_klass(_tuple, t):
 def is_not_a_klass(_tuple, t):
     klass = Point if t == "point" else Vector
     assert not isinstance(_tuple, klass)
+
+
+@then(
+    parsers.cfparse(
+        "p = tuple({x:Number}, {y:Number}, {z:Number}, {w:Number})",
+        extra_types=dict(Number=float),
+    )
+)
+def is_point_from_tuple(_point, x, y, z, w):
+    pass
+
+
+@then(
+    parsers.cfparse(
+        "v = tuple({x:Number}, {y:Number}, {z:Number}, {w:Number})",
+        extra_types=dict(Number=float),
+    )
+)
+def is_vectory_from_tuple(_vector, x, y, z, w):
+    assert _vector == Tuple(x, y, z, w)

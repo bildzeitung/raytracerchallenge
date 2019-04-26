@@ -29,6 +29,9 @@ class Tuple:
     def w(self):
         return self._t[3]
 
+    def __eq__(self, other):
+        return (self._t == other._t).all()
+
 
 class Point(Tuple):
     """ a point is a tuple with w == 1
@@ -46,8 +49,16 @@ class Vector(Tuple):
         super().__init__(x, y, z, 0)
 
 
-def make_tuple(x:float, y:float, z:float, w:float) -> Tuple:
+def make_tuple(x: float, y: float, z: float, w: float) -> Tuple:
     if w == 0:
         return Vector(x, y, z)
 
     return Point(x, y, z)
+
+
+def point(x: float, y: float, z: float) -> Point:
+    return Point(x, y, z)
+
+
+def vector(x: float, y: float, z: float) -> Vector:
+    return Vector(x, y, z)
