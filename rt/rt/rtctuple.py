@@ -44,6 +44,9 @@ class Tuple:
     def __mul__(self, other):
         return Tuple(0, 0, 0, 0, self._t * other)
 
+    def __truediv__(self, other):
+        return Tuple(0, 0, 0, 0, self._t / other)
+
 
 class Point(Tuple):
     """ a point is a tuple with w == 1
