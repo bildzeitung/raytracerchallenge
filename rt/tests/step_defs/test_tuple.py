@@ -1,30 +1,8 @@
-from pytest_bdd import scenario, given, then, parsers
-from rt.rtctuple import make_tuple, Point, Vector, point, vector, Tuple
+from pytest_bdd import scenarios
+from pytest_bdd import given, then, parsers
+from rt.rtctuple import make_tuple, Point, Vector, Tuple
 
-
-@scenario("tuple.feature", "A tuple with w=1.0 is a point")
-def test_point_tuple():
-    pass
-
-
-@scenario("tuple.feature", "A tuple with w=0 is a vector")
-def test_vector_tuple():
-    pass
-
-
-@scenario("tuple.feature", "point() creates tuples with w=1")
-def test_point_factory():
-    pass
-
-
-@scenario("tuple.feature", "vector() creates tuples with w=0")
-def test_vector_factory():
-    pass
-
-
-@scenario("tuple.feature", "Adding two tuples")
-def test_tuple_addition():
-    pass
+scenarios('../features/tuple.feature')
 
 
 @given(
@@ -33,7 +11,7 @@ def test_tuple_addition():
     )
 )
 def _point(x, y, z):
-    return point(x, y, z)
+    return Point(x, y, z)
 
 
 @given(
@@ -42,7 +20,7 @@ def _point(x, y, z):
     )
 )
 def _vector(x, y, z):
-    return vector(x, y, z)
+    return Vector(x, y, z)
 
 
 @given(
@@ -73,6 +51,26 @@ def _a1_tuple(x, y, z, w):
 )
 def _a2_tuple(x, y, z, w):
     return make_tuple(x, y, z, w)
+
+
+@given(
+    parsers.cfparse(
+        "p1 = point({x:Number}, {y:Number}, {z:Number})",
+        extra_types=dict(Number=float),
+    )
+)
+def _p1_point(x, y, z):
+    return Point(x, y, z)
+
+
+@given(
+    parsers.cfparse(
+        "p2 = point({x:Number}, {y:Number}, {z:Number})",
+        extra_types=dict(Number=float),
+    )
+)
+def _p2_point(x, y, z):
+    return Point(x, y, z)
 
 
 @then(parsers.cfparse("a.x = {x:Number}", extra_types=dict(Number=float)))
@@ -135,3 +133,13 @@ def is_vectory_from_tuple(_vector, x, y, z, w):
 )
 def valid_addition(_a1_tuple, _a2_tuple, x, y, z, w):
     assert Tuple(x, y, z, w) == _a1_tuple + _a2_tuple
+
+
+@then(
+    parsers.cfparse(
+        "p1 - p2 = vector({x:Number}, {y:Number}, {z:Number})",
+        extra_types=dict(Number=float)
+    )
+)
+def validate_subtraction(_p1_point, _p2_point, x, y, z):
+    assert Vector(x, y, z) == _p1_point - _p2_point

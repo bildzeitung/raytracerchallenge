@@ -46,6 +46,11 @@ class Point(Tuple):
     def __init__(self, x: float, y: float, z: float):
         super().__init__(x, y, z, 1)
 
+    def __sub__(self, other):
+        """ Returns a Vector
+        """
+        return Tuple(0, 0, 0, 0, self._t - other._t)
+
 
 class Vector(Tuple):
     """ a vector is a tuple with w == 0
@@ -60,11 +65,3 @@ def make_tuple(x: float, y: float, z: float, w: float) -> Tuple:
         return Vector(x, y, z)
 
     return Point(x, y, z)
-
-
-def point(x: float, y: float, z: float) -> Point:
-    return Point(x, y, z)
-
-
-def vector(x: float, y: float, z: float) -> Vector:
-    return Vector(x, y, z)
