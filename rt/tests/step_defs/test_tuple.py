@@ -73,6 +73,26 @@ def _p2_point(x, y, z):
     return Point(x, y, z)
 
 
+@given(
+    parsers.cfparse(
+        "v1 = vector({x:Number}, {y:Number}, {z:Number})",
+        extra_types=dict(Number=float),
+    )
+)
+def _v1_vector(x, y, z):
+    return Vector(x, y, z)
+
+
+@given(
+    parsers.cfparse(
+        "v2 = vector({x:Number}, {y:Number}, {z:Number})",
+        extra_types=dict(Number=float),
+    )
+)
+def _v2_vector(x, y, z):
+    return Vector(x, y, z)
+
+
 @then(parsers.cfparse("a.x = {x:Number}", extra_types=dict(Number=float)))
 def x_coord_matches_value(_tuple, x):
     assert _tuple.x == x
@@ -141,5 +161,25 @@ def valid_addition(_a1_tuple, _a2_tuple, x, y, z, w):
         extra_types=dict(Number=float)
     )
 )
-def validate_subtraction(_p1_point, _p2_point, x, y, z):
+def validate_point_minus_point_subtraction(_p1_point, _p2_point, x, y, z):
     assert Vector(x, y, z) == _p1_point - _p2_point
+
+
+@then(
+    parsers.cfparse(
+        "p - v = point({x:Number}, {y:Number}, {z:Number})",
+        extra_types=dict(Number=float)
+    )
+)
+def validate_point_minus_vector_subtraction(_point, _vector, x, y, z):
+    assert Point(x, y, z) == _point - _vector
+
+
+@then(
+    parsers.cfparse(
+        "v1 - v2 = vector({x:Number}, {y:Number}, {z:Number})",
+        extra_types=dict(Number=float)
+    )
+)
+def validate_vector_minus_vector_subtraction(_v1_vector, _v2_vector, x, y, z):
+    assert Vector(x, y, z) == _v1_vector - _v2_vector

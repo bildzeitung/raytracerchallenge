@@ -59,6 +59,9 @@ class Vector(Tuple):
     def __init__(self, x: float, y: float, z: float):
         super().__init__(x, y, z, 0)
 
+    def __sub__(self, other):
+        return Tuple(0, 0, 0, 0, self._t - other._t)
+
 
 def make_tuple(x: float, y: float, z: float, w: float) -> Tuple:
     if w == 0:
