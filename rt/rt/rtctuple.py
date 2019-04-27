@@ -38,6 +38,9 @@ class Tuple:
     def __add__(self, other):
         return Tuple(0, 0, 0, 0, self._t + other._t)
 
+    def __neg__(self):
+        return Tuple(0, 0, 0, 0, -self._t)
+
 
 class Point(Tuple):
     """ a point is a tuple with w == 1
@@ -66,5 +69,7 @@ class Vector(Tuple):
 def make_tuple(x: float, y: float, z: float, w: float) -> Tuple:
     if w == 0:
         return Vector(x, y, z)
+    elif w == 1:
+        return Point(x, y, z)
 
-    return Point(x, y, z)
+    return Tuple(x, y, z, w)

@@ -2,7 +2,7 @@ from pytest_bdd import scenarios
 from pytest_bdd import given, then, parsers
 from rt.rtctuple import make_tuple, Point, Vector, Tuple
 
-scenarios('../features/tuple.feature')
+scenarios("../features/tuple.feature")
 
 
 @given(
@@ -55,8 +55,7 @@ def _a2_tuple(x, y, z, w):
 
 @given(
     parsers.cfparse(
-        "p1 = point({x:Number}, {y:Number}, {z:Number})",
-        extra_types=dict(Number=float),
+        "p1 = point({x:Number}, {y:Number}, {z:Number})", extra_types=dict(Number=float)
     )
 )
 def _p1_point(x, y, z):
@@ -65,8 +64,7 @@ def _p1_point(x, y, z):
 
 @given(
     parsers.cfparse(
-        "p2 = point({x:Number}, {y:Number}, {z:Number})",
-        extra_types=dict(Number=float),
+        "p2 = point({x:Number}, {y:Number}, {z:Number})", extra_types=dict(Number=float)
     )
 )
 def _p2_point(x, y, z):
@@ -91,6 +89,18 @@ def _v1_vector(x, y, z):
 )
 def _v2_vector(x, y, z):
     return Vector(x, y, z)
+
+
+@given(parsers.cfparse("zero = vector(0, 0, 0)"))
+def _zero():
+    return Vector(0, 0, 0)
+
+
+"""
+
+    THEN STEPS
+
+"""
 
 
 @then(parsers.cfparse("a.x = {x:Number}", extra_types=dict(Number=float)))
@@ -158,7 +168,7 @@ def valid_addition(_a1_tuple, _a2_tuple, x, y, z, w):
 @then(
     parsers.cfparse(
         "p1 - p2 = vector({x:Number}, {y:Number}, {z:Number})",
-        extra_types=dict(Number=float)
+        extra_types=dict(Number=float),
     )
 )
 def validate_point_minus_point_subtraction(_p1_point, _p2_point, x, y, z):
@@ -168,7 +178,7 @@ def validate_point_minus_point_subtraction(_p1_point, _p2_point, x, y, z):
 @then(
     parsers.cfparse(
         "p - v = point({x:Number}, {y:Number}, {z:Number})",
-        extra_types=dict(Number=float)
+        extra_types=dict(Number=float),
     )
 )
 def validate_point_minus_vector_subtraction(_point, _vector, x, y, z):
@@ -178,8 +188,28 @@ def validate_point_minus_vector_subtraction(_point, _vector, x, y, z):
 @then(
     parsers.cfparse(
         "v1 - v2 = vector({x:Number}, {y:Number}, {z:Number})",
-        extra_types=dict(Number=float)
+        extra_types=dict(Number=float),
     )
 )
 def validate_vector_minus_vector_subtraction(_v1_vector, _v2_vector, x, y, z):
     assert Vector(x, y, z) == _v1_vector - _v2_vector
+
+
+@then(
+    parsers.cfparse(
+        "zero - v = vector({x:Number}, {y:Number}, {z:Number})",
+        extra_types=dict(Number=float),
+    )
+)
+def validate_zero_minus_vector(_zero, _vector, x, y, z):
+    assert _zero - _vector == Vector(x, y, z)
+
+
+@then(
+    parsers.cfparse(
+        "-a = tuple({x:Number}, {y:Number}, {z:Number}, {w:Number})",
+        extra_types=dict(Number=float),
+    )
+)
+def validate_tuple_negation(_tuple, x, y, z, w):
+    assert -_tuple == Tuple(x, y, z, w)
