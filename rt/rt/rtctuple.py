@@ -32,6 +32,10 @@ class Tuple:
     def w(self):
         return self._t[3]
 
+    @property
+    def magnitude(self):
+        return np.linalg.norm(self._t)
+
     def __eq__(self, other):
         return (self._t == other._t).all()
 

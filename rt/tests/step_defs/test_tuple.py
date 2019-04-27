@@ -1,3 +1,4 @@
+from math import sqrt
 from pytest_bdd import scenarios
 from pytest_bdd import given, then, parsers
 from rt.rtctuple import make_tuple, Point, Vector, Tuple
@@ -233,3 +234,23 @@ def validate_scalar_multiply(_tuple, s, x, y, z, w):
 )
 def validate_scalar_division(_tuple, s, x, y, z, w):
     assert _tuple / s == Tuple(x, y, z, w)
+
+
+@then(
+    parsers.cfparse(
+        "magnitude(v) = {m:Number}",
+        extra_types=dict(Number=float),
+    )
+)
+def validate_magnitude_computation(_vector, m):
+    assert _vector.magnitude == m
+
+
+@then(
+    parsers.cfparse(
+        "magnitude(v) = sqrt({m:Number})",
+        extra_types=dict(Number=float),
+    )
+)
+def validate_magnitude_computation_2(_vector, m):
+    assert _vector.magnitude == sqrt(m)
