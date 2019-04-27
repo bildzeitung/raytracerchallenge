@@ -55,3 +55,7 @@ Scenario: Subtracting a vector from the zero vector
 Scenario: Negating a tuple
     Given a = tuple(1, -2, 3, -4)
     Then -a = tuple(-1, 2, -3, 4)
+
+Scenario: Multiplying a tuple by a scalar
+    Given a = tuple(1, -2, 3, -4)
+    Then a * 3.5 = tuple(3.5, -7, 10.5, -14)

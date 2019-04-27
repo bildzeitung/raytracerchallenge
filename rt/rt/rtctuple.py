@@ -41,6 +41,9 @@ class Tuple:
     def __neg__(self):
         return Tuple(0, 0, 0, 0, -self._t)
 
+    def __mul__(self, other):
+        return Tuple(0, 0, 0, 0, self._t * other)
+
 
 class Point(Tuple):
     """ a point is a tuple with w == 1

@@ -213,3 +213,13 @@ def validate_zero_minus_vector(_zero, _vector, x, y, z):
 )
 def validate_tuple_negation(_tuple, x, y, z, w):
     assert -_tuple == Tuple(x, y, z, w)
+
+
+@then(
+    parsers.cfparse(
+        "a * {s:Number} = tuple({x:Number}, {y:Number}, {z:Number}, {w:Number})",
+        extra_types=dict(Number=float),
+    )
+)
+def validate_scalar_multiply(_tuple, s, x, y, z, w):
+    assert _tuple * s == Tuple(x, y, z, w)
