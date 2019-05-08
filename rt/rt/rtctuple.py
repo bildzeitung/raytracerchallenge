@@ -94,3 +94,7 @@ def make_tuple(x: float, y: float, z: float, w: float) -> Tuple:
         return Point(x, y, z)
 
     return Tuple(x, y, z, w)
+
+
+def dot(a: Tuple, b: Tuple) -> float:
+    return np.dot(a._t, b._t)

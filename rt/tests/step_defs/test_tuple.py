@@ -1,7 +1,7 @@
 from math import sqrt
 from pytest_bdd import scenarios
 from pytest_bdd import given, when, then, parsers
-from rt.rtctuple import make_tuple, Point, Vector, Tuple
+from rt.rtctuple import make_tuple, Point, Vector, Tuple, dot
 
 scenarios("../features/tuple.feature")
 
@@ -300,3 +300,13 @@ def validate_normalize_approximately(_vector, x, y, z):
 )
 def validate_magnitude_of_normalized_vector(_vector, n):
     assert _vector.norm.magnitude == n
+
+
+@then(
+    parsers.cfparse(
+        "dot(v1, v2) = {n:Number}",
+        extra_types=dict(Number=float)
+    )
+)
+def validate_dot_product(_v1_vector, _v2_vector, n):
+    assert dot(_v1_vector, _v2_vector) == n
