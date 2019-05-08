@@ -1,6 +1,6 @@
 from math import sqrt
 from pytest_bdd import scenarios
-from pytest_bdd import given, then, parsers
+from pytest_bdd import given, when, then, parsers
 from rt.rtctuple import make_tuple, Point, Vector, Tuple
 
 scenarios("../features/tuple.feature")
@@ -95,6 +95,16 @@ def _v2_vector(x, y, z):
 @given(parsers.cfparse("zero = vector(0, 0, 0)"))
 def _zero():
     return Vector(0, 0, 0)
+
+
+"""
+
+    WHEN STEPS
+
+"""
+@when("norm = normalize(v)")
+def _normalized_vector(_vector):
+    _vector.norm
 
 
 """
@@ -254,3 +264,39 @@ def validate_magnitude_computation(_vector, m):
 )
 def validate_magnitude_computation_2(_vector, m):
     assert _vector.magnitude == sqrt(m)
+
+
+@then(
+    parsers.cfparse(
+        "normalize(v) = vector({x:Number}, {y:Number}, {z:Number})",
+        extra_types=dict(Number=float),        
+    )
+)
+def validate_normalize(_vector, x, y, z):
+    assert _vector.norm == Vector(x, y, z)
+
+
+@then(
+    parsers.cfparse(
+        "normalize(v) = approximately vector({x:Number}, {y:Number}, {z:Number})",
+        extra_types=dict(Number=float)
+    )
+)
+def validate_normalize_approximately(_vector, x, y, z):
+    """ Floating-point comparison; use an epsilon to assert correctness
+    """
+    epsilon = 0.00001
+    under_test = _vector.norm
+    assert x - epsilon <= under_test.x <= x + epsilon
+    assert y - epsilon <= under_test.y <= y + epsilon
+    assert z - epsilon <= under_test.z <= z + epsilon
+
+
+@then(
+    parsers.cfparse(
+        "magnitude(norm) = {n:Number}",
+        extra_types=dict(Number=float)
+    )
+)
+def validate_magnitude_of_normalized_vector(_vector, n):
+    assert _vector.norm.magnitude == n

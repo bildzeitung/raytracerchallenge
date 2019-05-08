@@ -32,10 +32,6 @@ class Tuple:
     def w(self):
         return self._t[3]
 
-    @property
-    def magnitude(self):
-        return np.linalg.norm(self._t)
-
     def __eq__(self, other):
         return (self._t == other._t).all()
 
@@ -71,6 +67,21 @@ class Vector(Tuple):
 
     def __init__(self, x: float, y: float, z: float):
         super().__init__(x, y, z, 0)
+        self._magnitude = None
+        self._norm = None
+
+    @property
+    def magnitude(self):
+        if not self._magnitude:
+            self._magnitude = np.linalg.norm(self._t)
+        return self._magnitude
+
+    @property
+    def norm(self):
+        if not self._norm:
+            result = self._t / self.magnitude
+            self._norm = Vector(result[0], result[1], result[2])
+        return self._norm
 
     def __sub__(self, other):
         return Tuple(0, 0, 0, 0, self._t - other._t)
