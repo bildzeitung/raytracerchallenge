@@ -98,3 +98,9 @@ def make_tuple(x: float, y: float, z: float, w: float) -> Tuple:
 
 def dot(a: Tuple, b: Tuple) -> float:
     return np.dot(a._t, b._t)
+
+
+def cross(a: Vector, b: Vector) -> Vector:
+    v = np.cross(a._t[0:3], b._t[0:3])
+    print(v[0], v[1], v[2])
+    return Vector(v[0], v[1], v[2])

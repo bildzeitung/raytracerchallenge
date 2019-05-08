@@ -1,7 +1,7 @@
 from math import sqrt
 from pytest_bdd import scenarios
 from pytest_bdd import given, when, then, parsers
-from rt.rtctuple import make_tuple, Point, Vector, Tuple, dot
+from rt.rtctuple import make_tuple, Point, Vector, Tuple, dot, cross
 
 scenarios("../features/tuple.feature")
 
@@ -310,3 +310,23 @@ def validate_magnitude_of_normalized_vector(_vector, n):
 )
 def validate_dot_product(_v1_vector, _v2_vector, n):
     assert dot(_v1_vector, _v2_vector) == n
+
+
+@then(
+    parsers.cfparse(
+        "cross(v1, v2) = vector({x:Number}, {y:Number}, {z:Number})",
+        extra_types=dict(Number=float)
+    )
+)
+def validate_cross_product_v1_v2(_v1_vector, _v2_vector, x, y, z):
+    assert cross(_v1_vector, _v2_vector) == Vector(x, y, z)
+
+
+@then(
+    parsers.cfparse(
+        "cross(v2, v1) = vector({x:Number}, {y:Number}, {z:Number})",
+        extra_types=dict(Number=float)
+    )
+)
+def validate_cross_product_v2_v1(_v1_vector, _v2_vector, x, y, z):
+    assert cross(_v2_vector, _v1_vector) == Vector(x, y, z)
