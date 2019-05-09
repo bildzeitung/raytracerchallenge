@@ -1,7 +1,8 @@
 from math import sqrt
 from pytest_bdd import scenarios
 from pytest_bdd import given, when, then, parsers
-from rt.rtctuple import make_tuple, Point, Vector, Tuple, dot, cross
+from rt.rtctuple import make_tuple, dot, cross
+from rt import Colour, Point, Vector, Tuple
 
 scenarios("../features/tuple.feature")
 
@@ -95,6 +96,15 @@ def _v2_vector(x, y, z):
 @given(parsers.cfparse("zero = vector(0, 0, 0)"))
 def _zero():
     return Vector(0, 0, 0)
+
+
+@given(parsers.cfparse(
+    "c = color({r:Number}, {g:Number}, {b:Number})",
+    extra_types=dict(Number=float)
+    )
+)
+def _colour(r, g, b):
+    return Colour(r, g, b)
 
 
 """
@@ -330,3 +340,18 @@ def validate_cross_product_v1_v2(_v1_vector, _v2_vector, x, y, z):
 )
 def validate_cross_product_v2_v1(_v1_vector, _v2_vector, x, y, z):
     assert cross(_v2_vector, _v1_vector) == Vector(x, y, z)
+
+
+@then(parsers.cfparse("c.red = {n:Number}", extra_types=dict(Number=float)))
+def validate_red_component(_colour, n):
+    assert _colour.red == n
+
+
+@then(parsers.cfparse("c.green = {n:Number}", extra_types=dict(Number=float)))
+def validate_red_component(_colour, n):
+    assert _colour.green == n
+
+
+@then(parsers.cfparse("c.blue = {n:Number}", extra_types=dict(Number=float)))
+def validate_red_component(_colour, n):
+    assert _colour.blue == n
